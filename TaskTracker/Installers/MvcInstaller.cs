@@ -13,6 +13,7 @@ namespace TaskTracker.Installers
         public void ServiceInstaller(IServiceCollection services, IConfiguration confguration)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddSwaggerGen(x => 
                                 x.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                                 { Title = "TaskTracker", Version = "V1" }));
