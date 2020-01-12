@@ -29,19 +29,8 @@ namespace TaskTracker
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            var installers = typeof(Startup).Assembly.ExportedTypes.Where(x =>
-            typeof(IInstaller).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
-            .Select(Activator.CreateInstance).Cast<IInstaller>().ToList();
-
-            installers.ForEach(installer => installer.ServiceInstaller(services, Configuration));
+        {     
+            InstallExtensions.InstallServicesInAssembly(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

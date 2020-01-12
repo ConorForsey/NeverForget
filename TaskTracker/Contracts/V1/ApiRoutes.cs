@@ -13,9 +13,13 @@ namespace TaskTracker.Contracts.V1
 
         public const string directory = root + "/" + version;
 
-        public static class Tasks
+        public static class Jobs
         {
-            public const string GetAll = directory + "/tasks";
+            public const string GetAll = directory + "/jobs";
+
+            public const string Get = directory + "/jobs/{jobId}";
+
+            public const string Create = directory + "/job";
         }
     }
 }
