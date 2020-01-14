@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskTracker.Data;
+using TaskTracker.Services;
 
 namespace TaskTracker.Installers
 {
@@ -31,6 +32,8 @@ namespace TaskTracker.Installers
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<DataContext>();
+
+            services.AddScoped<IJobService, JobService>();
         }
     }
 }

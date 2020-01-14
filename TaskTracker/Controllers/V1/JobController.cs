@@ -7,59 +7,77 @@ using TaskTracker.Contracts.V1;
 using TaskTracker.Contracts.V1.Requests;
 using TaskTracker.Contracts.V1.Response;
 using TaskTracker.Domain;
+using TaskTracker.Services;
 
 namespace TaskTracker.Controllers.V1
 {
     public class JobController : Controller
     {
-        private readonly List<Job> _Jobs;
+        private readonly IJobService _jobService;
 
-        public JobController()
+        public JobController(IJobService jobService)
         {
-            _Jobs = new List<Job>();
-            for (int i = 0; i < 5; i++)
-            {
-                _Jobs.Add(new Job 
-                { 
-                    Id = Guid.NewGuid(),
-                    Name = $"Job Name {i}"
-                });
-            }
+            _jobService = jobService;
         }
         [HttpGet(ApiRoutes.Jobs.GetAll)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_Jobs);
+            return Ok(await _jobService.GetJobsAsync());
         }
 
         [HttpGet(ApiRoutes.Jobs.Get)]
-        public IActionResult Get([FromRoute]Guid jobId)
+        public async Task<IActionResult> Get([FromRoute]Guid jobId)
         {
-            var job = _Jobs.SingleOrDefault(x => x.Id == jobId);
+            var job = await _jobService.GetJobByIdAsync(jobId);
 
             if(job == null)
             {
                 return NotFound();
             }
-            return Ok(_Jobs);
+            return Ok(job);
         }
 
         [HttpPost(ApiRoutes.Jobs.Create)]
-        public IActionResult Create([FromBody] CreatePostRequest postRequest)
+        public async Task<IActionResult> Create([FromBody] CreateJobRequest jobRequest)
         {
-            var job = new Job { Id = postRequest.Id };
-            if (job.Id != Guid.Empty)
-            {
-                job.Id = Guid.NewGuid();
-            }
+            var job = new Job { Name = jobRequest.Name };
 
-            _Jobs.Add(job);
+            await _jobService.CreateJobAsync(job);
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUrl = baseUrl + "/" + ApiRoutes.Jobs.Get.Replace("{jobId}",job.Id.ToString());
 
-            var reponse = new PostResponse { Id = postRequest.Id };
+            var reponse = new PostResponse { Id = job.Id };
             return Created(locationUrl, job);
+        }
+
+        [HttpPut(ApiRoutes.Jobs.Update)]
+        public async Task<IActionResult> Update([FromRoute]Guid jobId, [FromBody]UpdateJobRequest request)
+        {
+            var job = new Job 
+            { 
+                Id = jobId, 
+                Name = request.Name 
+            };
+
+            var updated = await _jobService.UpdateJobAsync(job);
+
+            if (updated)
+            {
+                return Ok(job);
+            }
+            else return NotFound();
+        }
+
+        [HttpDelete(ApiRoutes.Jobs.Delete)]
+        public async Task<IActionResult> Delete([FromRoute]Guid jobId)
+        {
+            var deleted = await _jobService.DeleteJobAsync(jobId);
+            if (deleted)
+            {
+                return NoContent();
+            }
+            return NotFound();
         }
     }
 }

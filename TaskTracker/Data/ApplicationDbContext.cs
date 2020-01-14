@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TaskTracker.Domain;
 
 namespace TaskTracker.Data
 {
@@ -12,5 +13,7 @@ namespace TaskTracker.Data
             : base(options)
         {
         }
+
+        public DbSet<Job> Jobs { get; set; }
     }
 }

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace TaskTracker.Contracts.V1.Requests
 {
-    public class CreatePostRequest
+    public class CreateJobRequest
     {
-        public Guid Id { get; set; }
+        public string Name { get; set; }
     }
 }

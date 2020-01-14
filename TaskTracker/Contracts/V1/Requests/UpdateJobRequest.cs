@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TaskTracker.Domain
+namespace TaskTracker.Contracts.V1.Requests
 {
-    public class Job
+    public class UpdateJobRequest
     {
-        [Key]
-        public Guid Id { get; set; }
-
         public string Name { get; set; }
     }
 }

@@ -19,7 +19,11 @@ namespace TaskTracker.Contracts.V1
 
             public const string Get = directory + "/jobs/{jobId}";
 
-            public const string Create = directory + "/job";
-        }
+            public const string Create = directory + "/jobs";
+
+            public const string Update = directory + "/jobs/{jobId}";
+
+            public const string Delete = directory + "/jobs/{jobId}";
+        } 
     }
 }
