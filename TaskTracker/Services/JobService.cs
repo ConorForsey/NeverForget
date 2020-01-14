@@ -21,6 +21,11 @@ namespace TaskTracker.Services
         {
             var job = await GetJobByIdAsync(jobId);
 
+            if (job == null)
+            {
+                return false;
+            }
+
             _dataContext.Jobs.Remove(job);
 
             var deleted = await _dataContext.SaveChangesAsync();
