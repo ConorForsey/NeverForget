@@ -44,6 +44,8 @@ namespace TaskTracker
             app.UseSwaggerUI(options => { options.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description); });
 
             app.UseMvc();
+
+            app.UseAuthentication();
         }
     }
 }

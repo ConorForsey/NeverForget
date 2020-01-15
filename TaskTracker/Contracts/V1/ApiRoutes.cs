@@ -25,5 +25,13 @@ namespace TaskTracker.Contracts.V1
 
             public const string Delete = directory + "/jobs/{jobId}";
         } 
+
+        //This breaks Restful api. This Should be in a seperate identity server. 
+        public static class Identity
+        {
+            public const string Login = directory + "/identity/login";
+
+            public const string Register = directory + "/identity/register";
+        }
     }
 }
